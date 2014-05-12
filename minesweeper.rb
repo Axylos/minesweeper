@@ -46,7 +46,7 @@ class Board
   
   def print_board
     @board.each do |row|
-      row.map do |element|
+      row.map! do |element|
         
         if element.status == :covered
           "[*]"
@@ -62,8 +62,8 @@ class Board
       
           
       end
+      print row, "\n" 
       
-      puts
     end
   end
   
@@ -81,7 +81,7 @@ class Board
     ADJACENTS.each do |x, y| 
       a = pos[0] + x
       b= pos[1] + y
-      on_board = a.between?(0, @board.count) && b.between?(0, @board.count)
+      on_board = a.between?(0, (@board.count - 1)) && b.between?(0, (@board.count -1))
       neighs << [a, b] if on_board
     end
     
