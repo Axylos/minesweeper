@@ -24,9 +24,23 @@ class Board
     board
   end
   
+  def print_board
+    @board.each do |row|
+      row.each_index do |element|
+        
+        if element.status == :covered
+          "[ ]"
+        elsif element.status == :revealed
+        elsif
+          
+      end
+    end
+  end
+  
 end
 
 class Tile
+  attr_reader :status
   def initialize(bomb_present = false)
     @bomb_present = random unless bomb_present
     @status = :covered
