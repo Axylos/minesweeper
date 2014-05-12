@@ -70,11 +70,13 @@ class Board
   end
   
   def all_uncovered?
-    @board.flatten.none? { |tile| tile.status == :covered }
+    @board.flatten.none? do |tile| 
+      
+      tile.status == :covered
   end
   
   def uncover_all
-    puts "   0  1  2  3  4  5  6  7  8 "
+    puts "   0   1   2   3   4   5   6   7   8 "
     @board.each_with_index do |row, row_num|
       row.map! do |element|
         
@@ -103,7 +105,7 @@ class Board
 
       end     
       
-      print row_num, " ", row.join(""), "\n" 
+      print row_num, " ", row.join(" "), "\n\n" 
     end
   end
 
@@ -124,7 +126,7 @@ class Board
   
   def print_board
     pr_row = []
-    puts "   0  1  2  3  4  5  6  7  8 "
+    puts "   0   1   2   3   4   5   6   7   8 "
     @board.each_with_index do |row, row_num|
       pr_row = row.map do |element|
         
@@ -138,11 +140,9 @@ class Board
           else
             "[#{element.num_adj}]"
           end  
-        end
-      
-          
-      end
-      print row_num, " ", pr_row.join(""), "\n" 
+        end          
+      end 
+      print row_num, " ", pr_row.join(" "), "\n\n" 
       
     end
   end

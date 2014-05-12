@@ -2,13 +2,12 @@
 require "debugger"
 require "./tile.rb"
 require "./board.rb"
-require "./user.rb"
+require "yaml"
 
 class Minesweeper
   
-  def initialize(board, user)
+  def initialize(board)
     @board = board
-    @user = user
   end
   
   def run
@@ -18,7 +17,7 @@ class Minesweeper
     until over
       
       @board.print_board
-      move = @user.get_input
+      move = get_input
       
       @board.update_board(move)
       
@@ -33,7 +32,6 @@ class Minesweeper
       @board.print_board
     end
     
-    
   end
   
   def game_over?
@@ -46,13 +44,22 @@ class Minesweeper
     end
   end
   
+  def get_input
+    puts "Please enter a position and a command. E.g. f 1, 2; u 2 1"
+    puts "Enter s to break and save"
+    input = gets.chomp
     
+    command = input.scan(/[fus]/)
+    pos = input.scan(/\d+/).map(&:to_i)
+    
+    command + pos
+  end
   
 end
 
 if $PROGRAM_NAME == __FILE__
   
-  board = Board.new(2)
+  board = Board.new(9)
   user = User.new
   Minesweeper.new(board, user).run
   
