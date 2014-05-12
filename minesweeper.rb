@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+require "debugger"
 class Minesweeper
   
   def initialize(board, user)
@@ -24,19 +26,20 @@ class Board
   end
   
   def [](pos)
-    x, y = pos[0], pos[1]
+    x = pos[0]
+    y = pos[1]
     @board[x][y]
   end
     
   def make_board(size)
     
-    board = Array.new(size) do 
+    @board = Array.new(size) do 
       Array.new(size) do         
         Tile.new
       end
     end
     
-    board.determine_adjacencies
+    determine_adjacencies
     
     print_board
   end
@@ -65,16 +68,17 @@ class Board
   end
   
   def determine_adjacencies
-    @board.each_index |row| do
-      row.each_index |col| do
-        neighbors([row, col]).count { |pos| @board[pos].bombed}
+    @board.each_with_index do |line, row| 
+      line.each_index do |col| 
+        bomb_num = neighbors([row, col]).count { |a, b| @board[a][b].bombed}
+        @board[row][col].num_adj = bomb_num
       end
     end
   end
   
   def neighbors(pos)
     neighs = []
-    MOVES.each do |x, y| 
+    ADJACENTS.each do |x, y| 
       a = pos[0] + x
       b= pos[1] + y
       on_board = a.between?(0, @board.count) && b.between?(0, @board.count)
@@ -110,6 +114,13 @@ end
 
 class User
   
+  
+end
+
+
+if $PROGRAM_NAME == __FILE__
+  
+  board = Board.new(9)
   
 end
 
