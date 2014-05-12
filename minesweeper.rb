@@ -9,10 +9,25 @@ end
 
 class Board
   
+  ADJACENTS = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1]
+  ]
   def initialize(size)
     @board = make_board(size)
   end
   
+  def [](pos)
+    x, y = pos[0], pos[1]
+    @board[x][y]
+  end
+    
   def make_board(size)
     
     board = Array.new(size) do 
@@ -51,6 +66,12 @@ class Board
   
   def determine_adjacencies
     @board.
+  end
+  
+  def neighbors(pos)
+    MOVES.map do |x, y| 
+      pos[0] + x, pos[1] + y
+    end
   end
 end
 
