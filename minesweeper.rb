@@ -38,7 +38,7 @@ class Board
     
     board.determine_adjacencies
     
-    board
+    print_board
   end
   
   def print_board
@@ -65,18 +65,28 @@ class Board
   end
   
   def determine_adjacencies
-    @board.
+    @board.each_index |row| do
+      row.each_index |col| do
+        neighbors([row, col]).count { |pos| @board[pos].bombed}
+      end
+    end
   end
   
   def neighbors(pos)
-    MOVES.map do |x, y| 
-      pos[0] + x, pos[1] + y
+    neighs = []
+    MOVES.each do |x, y| 
+      a = pos[0] + x
+      b= pos[1] + y
+      on_board = a.between?(0, @board.count) && b.between?(0, @board.count)
+      neighs << [a, b] if on_board
     end
+    
+    neighs
   end
 end
 
 class Tile
-  attr_reader :status
+  attr_reader :status, :bombed
   attr_accessor :num_adj
   
   def initialize(bomb_present = false)
