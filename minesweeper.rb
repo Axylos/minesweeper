@@ -1,10 +1,25 @@
 #!/usr/bin/env ruby
 require "debugger"
+
 class Minesweeper
   
   def initialize(board, user)
     @board = board
     @user = user
+  end
+  
+  def run
+    puts "Welcome to Minesweeper!"
+    over = false
+    
+    until over
+      move = @user.get_input
+      
+      @board.update_board(move)
+      
+      
+      over = @board.game_over?
+    end
   end
   
 end
@@ -31,6 +46,16 @@ class Board
     @board[x][y]
   end
     
+  def update_board(move)
+    pos = move[1..2]
+    cmd = move[0]
+    
+    if cmd = "f"
+      @board[pos] = 
+      
+    end
+  end
+  
   def make_board(size)
     
     @board = Array.new(size) do 
@@ -45,7 +70,8 @@ class Board
   end
   
   def print_board
-    @board.each do |row|
+    puts "   0  1  2  3  4  5  6  7  8 "
+    @board.each_with_index do |row, row_num|
       row.map! do |element|
         
         if element.status == :covered
@@ -62,7 +88,7 @@ class Board
       
           
       end
-      print row, "\n" 
+      print row_num, " ", row.join(""), "\n" 
       
     end
   end
@@ -90,8 +116,9 @@ class Board
 end
 
 class Tile
-  attr_reader :status, :bombed
-  attr_accessor :num_adj
+  
+  attr_reader :bombed
+  attr_accessor :num_adj, :status
   
   def initialize(bomb_present = false)
     @bombed = random unless bomb_present
@@ -102,18 +129,20 @@ class Tile
   def random
     rand(3) == 0
   end
-  
-
-    
-  
-  
-  
-  
-  
+   
 end
 
 class User
   
+  def get_input
+    puts "Please enter a position and a command [f 1, 2]"
+    input = gets.chomp
+    
+    command = input.scan(/[fu]/)
+    pos = input.scan(/\d+/).map(&:to_i)
+    
+    command + pos
+  end
   
 end
 
