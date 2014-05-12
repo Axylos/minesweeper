@@ -19,6 +19,11 @@ class Minesweeper
       @board.print_board
       move = get_input
       
+      if move[0] == "s"
+        save_and_quit
+        return
+      end
+      
       @board.update_board(move)
       
       over = game_over?
@@ -55,13 +60,22 @@ class Minesweeper
     command + pos
   end
   
+  def save_and_quit
+    
+    File.open("minesweepergame.txt", "w") do |f|
+      f.puts @board.to_yaml
+    end
+    
+  end
+  
 end
 
 if $PROGRAM_NAME == __FILE__
+  load_file = YAML::load(File.open("minesweepergame.txt"))
   
-  board = Board.new(9)
-  user = User.new
-  Minesweeper.new(board, user).run
+  board = load_file || Board.new(9)
+
+  Minesweeper.new(board).run
   
 end
 

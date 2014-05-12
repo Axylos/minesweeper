@@ -70,9 +70,13 @@ class Board
   end
   
   def all_uncovered?
-    @board.flatten.none? do |tile| 
-      
+    @board.flatten.none? do |tile|       
       tile.status == :covered
+    end &&
+    @board.flatten.none? do |tile|       
+      (tile.status == :flagged && !tile.bombed)
+    end
+    
   end
   
   def uncover_all
